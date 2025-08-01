@@ -53,12 +53,18 @@ type User {
 }
 `;
 
+export const RegisterInput = `
+input RegisterInput {
+    name: String!
+    email: String!
+    password: String!
+}
+`;
+
 export const mutationDefs = `
 type Mutation {
     register(
-        name: String!
-        email: String!
-        password: String!
+        input: RegisterInput!
     ): String!
 
     login(email: String!, password: String!): String!

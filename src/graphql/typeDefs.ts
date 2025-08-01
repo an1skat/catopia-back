@@ -6,6 +6,7 @@ import {
   commentType,
   mutationDefs,
   queryDefs,
+  RegisterInput,
 } from "../shared/types/typeDefs.types";
 
 export const typeDefs = gql`
@@ -14,6 +15,7 @@ export const typeDefs = gql`
   ${commentType}
   ${postType}
   ${userType}
+  ${RegisterInput}
   ${mutationDefs}
   ${queryDefs}
 `;

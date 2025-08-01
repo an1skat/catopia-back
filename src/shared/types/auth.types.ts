@@ -1,7 +1,9 @@
 export interface RegisterArgs {
-  name: string;
-  email: string;
-  password: string;
+  input: {
+    name: string;
+    email: string;
+    password: string;
+  };
 }
 
 export interface LoginArgs {

@@ -16,7 +16,7 @@ interface IAuthResolver {
 export const authResolver: IAuthResolver = {
   Mutation: {
     register: async (_, args) => {
-      const { name, email, password } = args;
+      const { name, email, password } = args.input;
 
       if (!email || !password)
         throw new Error("Email and password are required");
