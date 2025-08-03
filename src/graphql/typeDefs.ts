@@ -7,6 +7,8 @@ import {
   mutationDefs,
   queryDefs,
   RegisterInput,
+  LoginInput,
+  AuthResponse,
 } from "../shared/types/typeDefs.types";
 
 export const typeDefs = gql`
@@ -16,6 +18,8 @@ export const typeDefs = gql`
   ${postType}
   ${userType}
   ${RegisterInput}
+  ${LoginInput}
+  ${AuthResponse}
   ${mutationDefs}
   ${queryDefs}
 `;

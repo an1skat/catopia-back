@@ -7,6 +7,8 @@ export interface RegisterArgs {
 }
 
 export interface LoginArgs {
-  email: string;
-  password: string;
+  input: {
+    email: string;
+    password: string;
+  };
 }

@@ -30,8 +30,10 @@ const startServer = async () => {
   app.use(
     "/graphql",
     expressMiddleware(server, {
-      context: async ({ req }) => ({
+      context: async ({ req, res }) => ({
         userId: (req as any).userId,
+        req,
+        res,
       }),
     })
   );

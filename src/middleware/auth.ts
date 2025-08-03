@@ -1,23 +1,23 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import { configDotenv } from "dotenv";
 
-dotenv.config();
+configDotenv();
+
+const ACCESS_SECRET = process.env.ACCESS_SECRET!;
 
 export const authMiddleware = (
   req: Request,
-  _res: Response,
+  _: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers.authorization;
-  if (authHeader) {
-    const token = authHeader.split(" ")[1];
+  const auth = req.headers.authorization;
+  if (auth?.startsWith("Bearer ")) {
     try {
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-      (req as any).userId = decoded.id;
-    } catch (err) {
-      console.error(err);
-    }
+      const token = auth.split(" ")[1];
+      const payload: any = jwt.verify(token, ACCESS_SECRET);
+      (req as any).userId = payload.userId;
+    } catch {}
   }
   next();
 };

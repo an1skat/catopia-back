@@ -60,15 +60,29 @@ input RegisterInput {
     password: String!
 }
 `;
+export const LoginInput = `
+input LoginInput {
+  email: String!
+  password: String!
+}
+`;
+
+export const AuthResponse = `
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+`;
 
 export const mutationDefs = `
 type Mutation {
-    register(
-        input: RegisterInput!
-    ): String!
-
-    login(email: String!, password: String!): String!
+  register(input: RegisterInput!): AuthResponse!
+  login(input: LoginInput!): AuthResponse!
+  refresh: String!
+  logout: Boolean!
 }
+
 `;
 
 export const queryDefs = `
