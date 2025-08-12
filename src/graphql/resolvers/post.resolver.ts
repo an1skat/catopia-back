@@ -1,8 +1,9 @@
 import { Post } from "../../models/Post";
 import { Comment } from "../../models/Comment";
 import { User } from "../../models/User";
+import { IResolvers } from "@graphql-tools/utils";
 
-export const postResolver = {
+export const postResolver: IResolvers = {
   Query: {
     getAllPosts: async () => {
       return await Post.find()

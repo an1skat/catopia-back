@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express4";
-import { typeDefs } from "./graphql/typeDefs";
+import { typeDefs } from "./graphql/typeDefs/index";
 import { resolvers } from "./graphql/resolvers/index";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -9,18 +9,32 @@ import bodyParser from "body-parser";
 import { configDotenv } from "dotenv";
 import { authMiddleware } from "./middleware/auth";
 import catRoutes from "./routes/catRoutes";
+import cookieParser from "cookie-parser";
 
 configDotenv();
 
+interface IContext {
+  userId?: string;
+  req: Request;
+  res: Response;
+}
+
 const app = express();
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 app.use(authMiddleware);
 
 app.use("/api/cats", catRoutes);
 
 const startServer = async () => {
-  const server = new ApolloServer({
+  const server = new ApolloServer<IContext>({
     typeDefs,
     resolvers,
   });
@@ -30,7 +44,7 @@ const startServer = async () => {
   app.use(
     "/graphql",
     expressMiddleware(server, {
-      context: async ({ req, res }) => ({
+      context: async ({ req, res }): Promise<IContext> => ({
         userId: (req as any).userId,
         req,
         res,
@@ -38,9 +52,8 @@ const startServer = async () => {
     })
   );
 
-  mongoose.connect(process.env.MONGO_URI!).then(() => {
-    console.log("MongoDB connected");
-  });
+  await mongoose.connect(process.env.MONGO_URI!);
+  console.log("MongoDB connected");
 };
 
 startServer();

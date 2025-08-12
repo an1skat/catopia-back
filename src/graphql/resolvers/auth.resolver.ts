@@ -5,6 +5,7 @@ import { User } from "../../models/User";
 import { Session } from "../../models/Session";
 import { RegisterArgs, LoginArgs } from "../../shared/types/auth.types";
 import { configDotenv } from "dotenv";
+import { IResolvers } from "@graphql-tools/utils";
 
 configDotenv();
 
@@ -21,7 +22,7 @@ const createTokens = (userId: string, sessionId: string) => {
   return { accessToken, refreshToken };
 };
 
-export const authResolver = {
+export const authResolver: IResolvers = {
   Mutation: {
     register: async (_: any, args: RegisterArgs, { res }: any) => {
       try {
@@ -58,13 +59,10 @@ export const authResolver = {
 
         if (!accessToken) throw new Error("Access token wasnt create");
 
-        return {
-          accessToken,
-          refreshToken,
-          user,
-        };
+        return "Registration done succesfully";
       } catch (error) {
         console.error(error);
+        throw new Error("Registration failed");
       }
     },
 
@@ -93,8 +91,10 @@ export const authResolver = {
 
       return {
         accessToken,
-        refreshToken,
-        user,
+        user: {
+          _id: user._id,
+          isAdmin: user.isAdmin,
+        },
       };
     },
 

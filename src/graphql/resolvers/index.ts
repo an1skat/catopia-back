@@ -1,6 +1,8 @@
-import { authResolver } from "./authResolver";
-import { userResolver } from "./userResolver";
-import { postResolver } from "./postResolver";
+import { authResolver } from "./auth.resolver";
+import { userResolver } from "./user.resolver";
+import { postResolver } from "./post.resolver";
+import { resetPasswordResolver } from "./resetPassword.resolver";
+// import type { IResolvers } from "@graphql-tools/utils";
 
 export const resolvers = {
   Query: {
@@ -8,6 +10,7 @@ export const resolvers = {
     ...postResolver.Query,
   },
   Mutation: {
+    ...resetPasswordResolver.Mutation,
     ...authResolver.Mutation,
   },
 };
