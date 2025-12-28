@@ -25,7 +25,7 @@ exports.postResolver = {
     },
     Post: {
         comments: async (parent) => {
-            return await Comment_1.Comment.find({
+            return Comment_1.Comment.find({
                 _id: { $in: parent.comments },
             }).populate("author");
         },
